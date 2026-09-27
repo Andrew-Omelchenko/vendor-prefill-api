@@ -2,174 +2,185 @@
 
 A production-shaped serverless reference project: a contract-first REST API on
 **AWS API Gateway + Lambda (Node.js 24) + DynamoDB**, provisioned with **AWS CDK**
-(TypeScript), calling an external vendor behind a **circuit breaker** with a
-**DynamoDB TTL cache**. Tested with **Jest + Supertest**, shipped with **GitHub Actions**.
+(TypeScript). It reads through a **DynamoDB TTL cache** to an external vendor behind a
+**circuit breaker**, supports create/update/delete with **optimistic concurrency**, and is
+authenticated at the edge. Authentication and the vendor integration are **chosen from
+configuration**, so the same code runs against real enterprise infrastructure or stands up
+fully self-contained. Tested at four levels (unit / component / integration / smoke) with a
+coverage gate, security-linted with cdk-nag, and shipped through GitHub Actions.
+
+Every significant decision is recorded as an ADR under [`docs/adr/`](docs/adr/), and the
+original code review plus its (completed) phased improvement plan lives in
+[`docs/review/`](docs/review/).
 
 ## Layout
 
 ```
-bin/app.ts                  CDK entry point; selects the environment
-lib/vendor-prefill-stack.ts The stack: DynamoDB + Lambda + API GW + IAM + logs
-config/index.ts             Per-environment NON-SECRET config (committed)
-src/handlers/               Thin Lambda adapters: get / post / put / delete
-src/domain/                 Logic, types, zod schemas, validation, errors (no AWS imports)
-src/clients/                vendor-client (circuit breaker) + repository (DynamoDB)
-src/lib/                    secrets, logger, EMF metrics, http helpers
-test/unit, test/integration Jest unit tests (incl. mocked-DynamoDB repo) + Supertest API tests
-openapi/prefill.yaml        Contract-first OpenAPI 3.0 spec
-.github/workflows/ci.yml    lint -> test -> synth -> (deploy prod from main)
+bin/
+  app.ts                     CDK entry point; selects the environment (and auth mode)
+  ci-bootstrap.ts            admin-run: GitHub OIDC provider + scoped deploy role
+lib/vendor-prefill-stack.ts  the stack: DynamoDB + KMS + Lambdas + API GW + WAF + IAM + alarms
+config/index.ts              per-environment NON-SECRET config (committed)
+src/
+  domain/                    logic + ports (interfaces), zod schemas, types, validation, errors
+    ports.ts                   dependency-inversion interfaces (repo, vendor, secrets, logger, clock)
+    prefill-service.ts         business logic as a factory over ports (no AWS, no I/O)
+    schemas.ts                 zod = single source of truth for shapes, types, and OpenAPI
+  clients/                   adapters: DynamoDB repository, HTTP vendor client, fake vendor
+  handlers/                  pure handler factories + shared wrapper (error->HTTP mapping)
+  entry/                     composition root + cold-start wiring (CDK points here)
+  lib/                       runtime-config, secrets, logger, redaction, metrics, http, jwt
+test/
+  unit/                      one module at a time, plain fakes (no jest.mock, no env)
+  component/                 real handlers+service+repo over supertest, DynamoDB mocked
+  integration/               repository against a real DynamoDB API (dynalite, in-process)
+  smoke/                     opt-in deployed-stage checks (SMOKE_BASE_URL)
+scripts/generate-openapi.ts  generates openapi/prefill.json from the zod schemas
+openapi/prefill.json         generated OpenAPI 3.0 spec (CI fails if it drifts)
+docs/                        architecture, ADRs, the code review, and an onboarding guide
+.github/workflows/ci.yml     format -> lint -> test(+coverage) -> synth (x3) -> openapi:check
 ```
 
-The load-bearing decision: **`lib/`+`bin/` is infrastructure, `src/` is application
-code, and `src/` imports no CDK.** That keeps handlers and logic testable in
-milliseconds without AWS, and keeps infra changes from rippling into business code.
+## Architecture at a glance
+
+The load-bearing rule: **`bin/` + `lib/` is infrastructure, `src/` is application code, and
+`src/` imports no CDK.** Dependencies are inverted behind ports (`src/domain/ports.ts`) and
+wired by a composition root (`src/entry/`), the only place with cold-start side effects. The
+result: handlers, service, and adapters are pure factories that tests construct with plain
+fakes — no mocking framework, no environment setup — and infra changes never ripple into
+business logic.
+
+A request flows: **ApigeeX (enterprise edge)** → **API Gateway** (JWT/Cognito authorizer,
+WAF, throttling, request validation) → **Lambda** (validate with zod, read-through cache,
+call the vendor behind a breaker) → **DynamoDB** and the **external vendor**. See
+[`docs/architecture/`](docs/architecture/) for the diagram and the trust boundary.
 
 ## Prerequisites
 
-- Node.js 24 (`node -v`)
-- AWS credentials configured (`aws configure` / SSO)
-- First time in an account/region: `npx cdk bootstrap`
-- Ensure `aws-cdk-lib` is recent enough to expose `Runtime.NODEJS_24_X`
-  (any release from late 2025 onward). `npm i aws-cdk-lib@latest` if `synth` complains.
+- Node.js 24 (`node -v`) — the Lambdas target the `nodejs24.x` runtime.
+- AWS credentials configured (`aws configure` / SSO).
+- First time in an account/region: `npx cdk bootstrap`.
 
-## Run it
+## Quick start
 
 ```bash
 npm ci
-npm test                 # unit + integration, no AWS needed
-npm run synth            # compile the CDK app to CloudFormation
-npm run deploy:dev       # deploy the dev stack  (cdk deploy -c env=dev)
-npm run deploy:staging
-npm run deploy:prod
+npm test                 # unit + component + integration, no AWS needed
+npm run test:coverage    # same, with the coverage gate enforced
+npm run synth            # compile the CDK app to CloudFormation (also runs cdk-nag)
+npm run deploy:dev       # deploy the dev stack (self-contained: fake vendor, see below)
 ```
 
-## One-time account setup
+## npm scripts
 
-Done once per account/region, outside the app deploy — these are inputs to CDK, not things
-the app stack can create for itself:
+- `build` — type-check only (`tsc --noEmit`).
+- `lint` / `lint:fix` — ESLint (flat config, TypeScript, Prettier-compatible).
+- `format` / `format:check` — Prettier.
+- `test` — unit + component + integration (Jest; smoke excluded).
+- `test:coverage` — the above with global coverage thresholds enforced.
+- `test:smoke` — deployed-stage smoke tests; skipped unless `SMOKE_BASE_URL` is set.
+- `openapi:generate` / `openapi:check` — regenerate / verify the OpenAPI spec from zod.
+- `synth` / `diff` — `cdk synth` / `cdk diff`.
+- `deploy:dev` / `deploy:staging` / `deploy:prod` — `cdk deploy -c env=<env>`.
+- `bootstrap:ci` — one-time admin task: create the GitHub OIDC provider + scoped deploy role.
 
-1. **Bootstrap CDK:** `npx cdk bootstrap aws://<account-id>/<region>` — creates the assets
-   bucket and roles CDK deploys through. (Deploy fails without it.)
-2. **Create the vendor secret** per env (its value comes from the vendor, so it stays out of
-   code; the stack only references it by name):
-   `aws secretsmanager create-secret --name vendor-prefill/dev/vendor-api-key --secret-string '<key>'`
-3. **Fix `config/index.ts`:** set the real `region` and `vendorBaseUrl` (defaults are placeholders).
+## Configuration and secrets
 
-Automated by CDK (optional):
+Two categories, handled two ways.
 
-- **CI deploy role (GitHub OIDC):** `npm run bootstrap:ci -- -c repo=owner/name` deploys a
-  separate, admin-run stack that creates the OIDC provider + a least-privilege deploy role, and
-  outputs its ARN. Put that ARN in the `AWS_DEPLOY_ROLE_ARN` GitHub secret. (Add
-  `-c oidcArn=<arn>` if the account already has a GitHub OIDC provider.)
-- **Alarm notifications:** set `alarmEmail` for an env in `config/index.ts` and the alarm SNS
-  topic gets that subscription automatically (confirm the email once).
+**Non-secret config** (region, cache TTL, log level, throttling, Lambda sizing, and which
+auth/vendor mode to use) lives in `config/index.ts`, keyed by environment and selected with
+`cdk deploy -c env=<dev|staging|prod>`. `bin/app.ts` names each stack `VendorPrefill-<env>`
+so environments never collide.
 
-## Configuration vs secrets — the important part
-
-Two categories, handled two different ways.
-
-### 1. Non-secret config -> committed, chosen at deploy time
-
-Region, table settings, vendor base URL, cache TTL, log level, Lambda sizing.
-None of this is sensitive, so it lives in `config/index.ts`, keyed by environment.
-You pick the environment with CDK context:
-
-```bash
-cdk deploy -c env=dev        # or staging / prod
-```
-
-`bin/app.ts` reads `env`, loads that config object, and names the stack
-`VendorPrefill-<env>` so the three environments never collide.
-
-### 2. Secrets -> AWS Secrets Manager, never in git, never in CloudFormation
-
-Vendor API keys, tokens, DB passwords. Rules:
-
-- **Never** commit a secret, and **never** put a real secret in a Lambda env var
-  in plaintext or in CDK code (CDK values end up in the CloudFormation template).
-- Store one secret **per environment**, with the env in the name:
-  `vendor-prefill/dev/vendor-api-key`, `.../staging/...`, `.../prod/...`.
-- CDK only **references the secret by name** (`Secret.fromSecretNameV2`) and
-  **grants the Lambda read access** (`vendorApiKey.grantRead(fn)`). Only the
-  secret _name_ is passed to the function as an env var.
-- The Lambda fetches the value **at runtime** (`src/lib/secrets.ts`) and caches it
-  in the warm container, so Secrets Manager is hit once per cold start, not per request.
-
-Create the secrets out-of-band (once per environment):
+**Secrets** (the vendor API key) live in AWS Secrets Manager, one per environment. CDK only
+references the secret **by name** and grants the Lambda read access; the value never enters
+CloudFormation. The function fetches it at runtime and caches it in the warm container
+(`src/lib/secrets.ts`). Create secrets out-of-band, e.g.:
 
 ```bash
 aws secretsmanager create-secret \
-  --name vendor-prefill/dev/vendor-api-key \
-  --secret-string 'the-real-dev-key'
-# repeat for staging and prod (ideally from a secure machine / CI, not a laptop)
+  --name vendor-prefill/prod/vendor-api-key \
+  --secret-string 'the-real-key'
 ```
 
-Cheaper alternative: **SSM Parameter Store `SecureString`** works the same way and
-costs less; Secrets Manager adds built-in rotation. To cut the cold-start read
-entirely, the **AWS Parameters and Secrets Lambda Extension** caches values in a
-sidecar — swap it in later without touching the handler.
+Copy `.env.example` to `.env` for local work; real keys never touch a developer laptop.
 
-### 3. Local development
+## Authentication (config-driven)
 
-Copy `.env.example` to `.env` (gitignored). Use a **sandbox** vendor URL and a
-throwaway local key, or mock the vendor entirely. Real prod/staging keys never
-touch a developer laptop.
+Chosen at deploy time (ADR-0012 / ADR-0023):
 
-### 4. CI/CD
+- **External IdP** — when `config.auth` (issuer, audience, JWKS URI) is set, a Lambda TOKEN
+  authorizer (`jose`) validates JWTs from that issuer on every method. This is the path for
+  environments behind the enterprise ApigeeX gateway. Callers send
+  `Authorization: Bearer <jwt>`.
+- **Cognito fallback** — when `config.auth` is omitted, the stack provisions a hardened
+  Cognito user pool (strong password policy, required TOTP MFA, Plus-tier threat protection,
+  no self-sign-up) and a Cognito authorizer. Callers send the raw ID token in `Authorization`
+  (no `Bearer ` prefix).
 
-GitHub Actions authenticates to AWS with **OIDC** (`aws-actions/configure-aws-credentials`
-assuming an IAM role) — no static AWS keys stored in GitHub. Any deploy-time secret
-uses **GitHub Environments + encrypted secrets**, scoped per environment, with a
-required reviewer on `production`.
+`cdk deploy -c env=dev -c authMode=cognito` forces the Cognito path regardless of config; CI
+synthesizes both branches. See [`docs/onboarding/`](docs/onboarding/) for how to obtain a
+token in each mode.
 
-### Environment isolation — how far to take it
+## Vendor integration (config-driven)
 
-- Minimum (this repo): one AWS account, env in every resource/secret name + stack name.
-- Better for real production: a **separate AWS account per environment**, so a dev
-  mistake can't reach prod data. CDK supports this via the `env: { account, region }`
-  you already see in `bin/app.ts`.
+- **Real vendor** — when `VENDOR_BASE_URL` (and its API-key secret) are configured, the GET
+  path calls the vendor over HTTPS behind an `opossum` circuit breaker with a timeout and a
+  null fallback, and caches successful reads in DynamoDB with a TTL.
+- **Fake vendor** — when `VENDOR_BASE_URL` is unset, an in-process fake returns in-contract,
+  deterministic-per-id records with no network call and no extra dependency (ADR-0024). The
+  **dev** environment omits the vendor URL and is therefore self-contained — its GET path
+  works with no upstream.
 
-## Endpoints
+## Testing
 
-- `GET /prefill/{id}` — cache -> vendor (circuit breaker) -> persist. Returns an `ETag`
-  (the record version). 200 / 400 / 502.
-- `POST /prefill` — create a record (starts at version 1). Create-only conditional write
-  (`attribute_not_exists(pk)`), so a duplicate id returns 409 instead of overwriting. 201 / 400 / 409.
-- `PUT /prefill/{id}` — full replace with **optimistic concurrency**. Requires an `If-Match`
-  header carrying the version last seen (or `*` for any existing version); the write is a single
-  conditional `UpdateItem` that checks the version and atomically bumps it. 200 / 400 / 404 / 412 / 428.
-- `DELETE /prefill/{id}` — delete; `If-Match` optional (when present, version-checked). 204 / 404 / 412.
+Four levels, each failing for one reason (ADR-0019):
 
-Optimistic concurrency uses one conditional write, not a read-then-write: the update/delete is
-conditional on the record existing and the version matching, and
-`ReturnValuesOnConditionCheckFailure` lets the repository tell "not found" (404) apart from
-"version conflict" (412) without a second call.
+- **unit** — a single module with injected fakes; no I/O.
+- **component** — the real handlers + service + repository wired together and driven over
+  HTTP (Supertest), with DynamoDB mocked and the vendor stubbed.
+- **integration** — the repository against a real DynamoDB API surface via `dynalite`
+  (in-process; no Docker or Java), exercising conditional writes on the wire.
+- **smoke** — opt-in checks against a deployed stage (`npm run test:smoke` with
+  `SMOKE_BASE_URL` / `SMOKE_TOKEN`).
 
-Request bodies are validated in two layers from a single source of truth: **zod** schemas
-(`src/domain/schemas.ts`) parse the body in the handler, and the same schemas are converted with
-`z.toJSONSchema()` into API Gateway request models, so malformed requests are rejected at the
-edge (400) before a Lambda is ever invoked.
+`test:coverage` enforces global thresholds; the composition root (`src/entry/`) is excluded
+because it is cold-start wiring exercised at deploy time.
 
 ## Observability
 
-When the vendor circuit breaker opens, the Lambda emits a `VendorPrefill/VendorCircuitOpen`
-metric via **Embedded Metric Format** (a structured log line CloudWatch auto-extracts — no
-`PutMetricData` call, no extra IAM). The stack wires a CloudWatch **alarm** on that metric to an
-SNS topic, plus a **dashboard** showing circuit opens and per-function Lambda errors. To use
-DataDog instead, add the DataDog Lambda extension layer and `DD_*` env vars, or forward the EMF
-metrics — the emit point (`src/lib/metrics.ts`) stays the same.
+Structured JSON logs carry a per-request **correlation id** (from an inbound
+`x-correlation-id` header or the API Gateway request id), propagated to every log line via
+`AsyncLocalStorage` and echoed back on the response. A denylist in the logger redacts PII and
+secret-ish fields as defense in depth. A circuit-breaker **open** event emits a CloudWatch EMF
+metric; the stack ships a dashboard and SNS alarms, and API Gateway access + method logs are
+enabled (request/response bodies are never logged).
 
-## What to extend next
+## Security & compliance
 
-- Subscribe a real endpoint (email / PagerDuty / Slack) to the alarm SNS topic.
-- Add `PATCH` for partial updates, and pagination / a `list` access pattern (needs a GSI).
-- Wire DataDog APM via the Lambda extension layer.
+- Every method requires authorization (external-IdP JWT or Cognito).
+- WAFv2 web ACL (AWS common rules + per-IP rate limit) in prod; stage throttling in all envs.
+- Per-function least-privilege IAM (a read function cannot write, and vice versa).
+- DynamoDB encrypted with a customer-managed KMS key; point-in-time recovery and deletion
+  protection in prod.
+- Domain field constraints (e.g. `riskScore` bounds) enforced from zod at the edge and in the
+  Lambda; a documented PII logging policy with redaction.
+- **cdk-nag** (`AwsSolutionsChecks`) runs on every synth and fails the build on findings;
+  exceptions are recorded as documented, evidence-based suppressions.
+- CORS is off by default (server-to-server behind ApigeeX); configurable per environment.
 
-## Docs
+## CI/CD
 
-Project documentation lives in [`docs/`](docs/):
+GitHub Actions authenticates to AWS with **OIDC** (no static keys). Pull requests run
+`format:check` → `lint` → `test:coverage` → `synth` for dev, prod, and the Cognito fallback →
+`openapi:check`. The prod deploy job assumes the scoped role via OIDC. One-time setup is in
+[`docs/onboarding/`](docs/onboarding/).
 
-- [`docs/onboarding/`](docs/onboarding/) — prerequisites, one-time account setup, and how to deploy.
-- [`docs/architecture/`](docs/architecture/) — target architecture and the trust boundary.
-- [`docs/adr/`](docs/adr/) — architecture decision records.
-- [`docs/review/`](docs/review/) — production-readiness review and the phased improvement plan.
+## Documentation
+
+- [`docs/architecture/`](docs/architecture/) — how the system works and the trust boundary.
+- [`docs/adr/`](docs/adr/) — the 24 architecture decision records and why each was made.
+- [`docs/review/`](docs/review/) — the original code review and the phased plan (all phases
+  complete).
+- [`docs/onboarding/`](docs/onboarding/) — deployment, auth, and verification runbook.
