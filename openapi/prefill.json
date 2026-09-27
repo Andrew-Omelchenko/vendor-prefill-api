@@ -1,0 +1,320 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Vendor Prefill API",
+    "version": "1.2.0",
+    "description": "Generated from the zod schemas. Do not edit by hand — run `npm run openapi:generate`."
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/prefill": {
+      "post": {
+        "summary": "Create a prefill record",
+        "operationId": "createPrefill",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePrefillInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Record created (starts at version 1)",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrefillRecord"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or missing fields"
+          },
+          "401": {
+            "description": "Missing or invalid token"
+          },
+          "409": {
+            "description": "A record with that id already exists"
+          },
+          "429": {
+            "description": "Too many requests (throttled)"
+          }
+        }
+      }
+    },
+    "/prefill/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get a prefill record by id",
+        "operationId": "getPrefill",
+        "responses": {
+          "200": {
+            "description": "Prefill record",
+            "headers": {
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrefillRecord"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing or invalid id"
+          },
+          "401": {
+            "description": "Missing or invalid token"
+          },
+          "429": {
+            "description": "Too many requests (throttled)"
+          },
+          "502": {
+            "description": "Vendor temporarily unavailable (circuit open)"
+          }
+        }
+      },
+      "put": {
+        "summary": "Replace a prefill record (optimistic concurrency)",
+        "operationId": "updatePrefill",
+        "parameters": [
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": true,
+            "description": "The version last seen (an ETag), or `*` for any existing version.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePrefillInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated (version bumped)",
+            "headers": {
+              "ETag": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrefillRecord"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid body or If-Match"
+          },
+          "401": {
+            "description": "Missing or invalid token"
+          },
+          "404": {
+            "description": "Record not found"
+          },
+          "412": {
+            "description": "Version conflict (record changed since If-Match)"
+          },
+          "428": {
+            "description": "If-Match header required"
+          },
+          "429": {
+            "description": "Too many requests (throttled)"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a prefill record",
+        "operationId": "deletePrefill",
+        "parameters": [
+          {
+            "name": "If-Match",
+            "in": "header",
+            "required": false,
+            "description": "When present, the delete is version-checked.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "401": {
+            "description": "Missing or invalid token"
+          },
+          "404": {
+            "description": "Record not found"
+          },
+          "412": {
+            "description": "Version conflict"
+          },
+          "429": {
+            "description": "Too many requests (throttled)"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT validated at the edge by the API Gateway authorizer."
+      }
+    },
+    "schemas": {
+      "CreatePrefillInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9._:-]+$"
+          },
+          "fullName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "riskScore": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          }
+        },
+        "required": [
+          "id",
+          "fullName",
+          "riskScore"
+        ],
+        "additionalProperties": false
+      },
+      "UpdatePrefillInput": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "riskScore": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          }
+        },
+        "required": [
+          "fullName",
+          "riskScore"
+        ],
+        "additionalProperties": false
+      },
+      "PrefillRecord": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9._:-]+$"
+          },
+          "fullName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "riskScore": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64
+          },
+          "cachedAt": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": -9007199254740991,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id",
+          "fullName",
+          "riskScore",
+          "source",
+          "cachedAt",
+          "version"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

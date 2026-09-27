@@ -1,0 +1,14 @@
+node_modules/
+cdk.out/
+dist/
+coverage/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+
+# WebStorm / IntelliJ: ignore machine-specific files, share only the code-quality toggles
+.idea/*
+!.idea/prettier.xml
+!.idea/jsLinters

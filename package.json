@@ -1,0 +1,67 @@
+{
+  "name": "vendor-prefill-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "jest",
+    "diff": "cdk diff",
+    "synth": "cdk synth",
+    "deploy:dev": "cdk deploy -c env=dev",
+    "deploy:staging": "cdk deploy -c env=staging",
+    "deploy:prod": "cdk deploy -c env=prod",
+    "bootstrap:ci": "cdk deploy --app 'npx ts-node --prefer-ts-exts bin/ci-bootstrap.ts' VendorPrefill-CiBootstrap",
+    "openapi:generate": "ts-node --prefer-ts-exts scripts/generate-openapi.ts",
+    "openapi:check": "ts-node --prefer-ts-exts scripts/generate-openapi.ts --check",
+    "test:coverage": "jest --coverage",
+    "test:smoke": "jest --config jest.smoke.config.cjs"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.700.0",
+    "@aws-sdk/client-secrets-manager": "^3.700.0",
+    "@aws-sdk/lib-dynamodb": "^3.700.0",
+    "jose": "^5.9.0",
+    "opossum": "^8.4.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.0",
+    "@types/aws-lambda": "^8.10.145",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.0",
+    "@types/opossum": "^8.1.8",
+    "@types/supertest": "^6.0.2",
+    "aws-cdk": "^2.216.0",
+    "aws-cdk-lib": "^2.216.0",
+    "aws-sdk-client-mock": "^4.1.0",
+    "aws-sdk-client-mock-jest": "^4.1.0",
+    "cdk-nag": "^2.35.0",
+    "constructs": "^10.4.0",
+    "dynalite": "^4.0.0",
+    "esbuild": "^0.25.0",
+    "eslint": "^10.0.0",
+    "eslint-config-prettier": "^10.1.5",
+    "express": "^5.0.0",
+    "jest": "^30.0.0",
+    "prettier": "^3.4.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.40.0"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "@parcel/watcher": true,
+    "unrs-resolver": true
+  }
+}
