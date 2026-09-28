@@ -1,13 +1,9 @@
-import type { APIGatewayProxyHandler } from 'aws-lambda';
 import type { Logger } from '../domain/ports';
 import type { PrefillService } from '../domain/prefill-service';
 import { validateCreateInput } from '../domain/validation';
-import { errorToResponse, json } from './handler-wrapper';
+import { ApiHandler, errorToResponse, json } from './handler-wrapper';
 
-export function createPostPrefillHandler(
-  service: PrefillService,
-  logger: Logger,
-): APIGatewayProxyHandler {
+export function createPostPrefillHandler(service: PrefillService, logger: Logger): ApiHandler {
   return async (event) => {
     let parsed: unknown;
     try {

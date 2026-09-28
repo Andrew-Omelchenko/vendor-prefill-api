@@ -80,7 +80,7 @@ export class VendorPrefillStack extends Stack {
         tracing: Tracing.ACTIVE,
         logGroup,
         environment: { ...defaultEnv, ...env },
-        bundling: { format: OutputFormat.ESM, target: 'node24', minify: isProd, sourceMap: true },
+        bundling: { format: OutputFormat.CJS, target: 'node24', minify: isProd, sourceMap: true },
       });
     };
 

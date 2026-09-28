@@ -28,11 +28,7 @@ const invoke = async (
   handler: ReturnType<typeof createGetPrefillHandler>,
   event: Partial<APIGatewayProxyEvent>,
 ): Promise<APIGatewayProxyResult> =>
-  (await handler(
-    event as APIGatewayProxyEvent,
-    {} as never,
-    () => undefined,
-  )) as APIGatewayProxyResult;
+  (await handler(event as APIGatewayProxyEvent, {} as never)) as APIGatewayProxyResult;
 
 describe('GET handler edge paths', () => {
   it('returns 400 when the id is missing', async () => {

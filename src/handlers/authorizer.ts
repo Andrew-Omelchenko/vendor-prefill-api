@@ -1,4 +1,4 @@
-import type { APIGatewayTokenAuthorizerHandler, APIGatewayAuthorizerResult } from 'aws-lambda';
+import type { APIGatewayAuthorizerResult, APIGatewayTokenAuthorizerHandler } from 'aws-lambda';
 import type { Logger } from '../domain/ports';
 
 export interface JwtVerifier {
@@ -24,6 +24,8 @@ export function createAuthorizer(
   verifier: JwtVerifier,
   logger: Logger,
 ): APIGatewayTokenAuthorizerHandler {
+  // Async-only handler: it declares a single `event` parameter and returns a
+  // Promise, so the Node 24 runtime treats it as async (no `callback`).
   return async (event) => {
     const header = event.authorizationToken ?? '';
     const token = header.startsWith('Bearer ') ? header.slice(7) : header;
