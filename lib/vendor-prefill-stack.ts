@@ -76,7 +76,7 @@ export class VendorPrefillStack extends Stack {
         runtime: Runtime.NODEJS_24_X,
         memorySize: config.lambda.memorySize,
         timeout: Duration.seconds(config.lambda.timeoutSeconds),
-        reservedConcurrentExecutions: reservedConcurrency,
+        reservedConcurrentExecutions: reservedConcurrency || undefined,
         tracing: Tracing.ACTIVE,
         logGroup,
         environment: { ...defaultEnv, ...env },

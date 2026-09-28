@@ -103,7 +103,7 @@ const configs: Record<Env, AppConfig> = {
     disableAuth: true,
     throttle: { rateLimit: 10, burstLimit: 20 }, // conservative: it is open to the world
     circuitBreaker: { timeoutMs: 3000, errorThresholdPercentage: 50, resetTimeoutMs: 15000 },
-    concurrency: { getReserved: 2 },
+    concurrency: { getReserved: 0 },
     lambda: { memorySize: 256, timeoutSeconds: 10 },
   },
 };
