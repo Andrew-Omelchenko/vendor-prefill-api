@@ -34,3 +34,4 @@ Status values: Proposed · Accepted · Superseded by ADR-N · Deprecated.
 | [0022](0022-no-cors-by-default.md)                           | No CORS by default (server-to-server API)                          | Accepted |
 | [0023](0023-configurable-auth-idp-or-cognito.md)             | Configurable auth: external-IdP JWT authorizer or Cognito fallback | Accepted |
 | [0024](0024-fake-vendor-when-unconfigured.md)                | Use an in-process fake vendor when VENDOR_BASE_URL is unset        | Accepted |
+| [0025](0025-demo-environment.md)                             | A demonstration environment: open, mock data, no secrets           | Accepted |

@@ -81,7 +81,7 @@ npm run deploy:dev       # deploy the dev stack (self-contained: fake vendor, se
 - `test:smoke` — deployed-stage smoke tests; skipped unless `SMOKE_BASE_URL` is set.
 - `openapi:generate` / `openapi:check` — regenerate / verify the OpenAPI spec from zod.
 - `synth` / `diff` — `cdk synth` / `cdk diff`.
-- `deploy:dev` / `deploy:staging` / `deploy:prod` — `cdk deploy -c env=<env>`.
+- `deploy:dev` / `deploy:staging` / `deploy:prod` / `deploy:demo` — `cdk deploy -c env=<env>`.
 - `bootstrap:ci` — one-time admin task: create the GitHub OIDC provider + scoped deploy role.
 
 ## Configuration and secrets
@@ -90,7 +90,7 @@ Two categories, handled two ways.
 
 **Non-secret config** (region, cache TTL, log level, throttling, Lambda sizing, and which
 auth/vendor mode to use) lives in `config/index.ts`, keyed by environment and selected with
-`cdk deploy -c env=<dev|staging|prod>`. `bin/app.ts` names each stack `VendorPrefill-<env>`
+`cdk deploy -c env=<dev|staging|prod|demo>`. `bin/app.ts` names each stack `VendorPrefill-<env>`
 so environments never collide.
 
 **Secrets** (the vendor API key) live in AWS Secrets Manager, one per environment. CDK only
@@ -120,7 +120,10 @@ Chosen at deploy time (ADR-0012 / ADR-0023):
   (no `Bearer ` prefix).
 
 `cdk deploy -c env=dev -c authMode=cognito` forces the Cognito path regardless of config; CI
-synthesizes both branches. See [`docs/onboarding/`](docs/onboarding/) for how to obtain a
+synthesizes both branches.
+
+The **demo** environment sets `disableAuth` and attaches **no authorizer** — a public API,
+safe only because it holds no secrets and serves mock vendor data (ADR-0025). See [`docs/onboarding/`](docs/onboarding/) for how to obtain a
 token in each mode.
 
 ## Vendor integration (config-driven)

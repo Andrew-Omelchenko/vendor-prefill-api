@@ -125,14 +125,18 @@ export class VendorPrefillStack extends Stack {
     const deletePrefillFn = makeFn('DeletePrefillFn', '../src/entry/delete-prefill.ts');
     table.grantWriteData(deletePrefillFn);
 
-    // ---- Auth: external-IdP JWT authorizer when configured, else a Cognito pool ----
+    // ---- Auth: none (demo) | external-IdP JWT (configured) | Cognito (fallback) ----
     // Enterprise deployments set config.auth and get the Lambda TOKEN authorizer that
     // validates JWTs from the IdP behind ApigeeX. Greenfield/local deployments leave it
-    // unset and get a hardened Cognito user pool as the token issuer (ADR-0023).
-    let authorizer: apigw.IAuthorizer;
+    // unset and get a hardened Cognito user pool (ADR-0023). A demo environment sets
+    // disableAuth and attaches no authorizer at all — a public API (ADR-0025).
+    let authorizer: apigw.IAuthorizer | undefined;
     let defaultAuthType: apigw.AuthorizationType;
 
-    if (config.auth) {
+    if (config.disableAuth) {
+      authorizer = undefined;
+      defaultAuthType = apigw.AuthorizationType.NONE;
+    } else if (config.auth) {
       const authorizerFn = makeFn('AuthorizerFn', '../src/entry/authorizer.ts', {
         JWT_ISSUER: config.auth.issuer,
         JWT_AUDIENCE: config.auth.audience,
@@ -210,9 +214,9 @@ export class VendorPrefillStack extends Stack {
         metricsEnabled: true,
         dataTraceEnabled: false, // never log request/response bodies (PII)
       },
-      // Every method requires authorization unless it overrides this.
+      // Every method requires authorization unless the env disables it (demo).
       defaultMethodOptions: {
-        authorizer,
+        ...(authorizer ? { authorizer } : {}),
         authorizationType: defaultAuthType,
       },
     });
@@ -372,6 +376,19 @@ export class VendorPrefillStack extends Stack {
           'stack); lower environments are internal and gate it off to control cost.',
       },
     ]);
+
+    // Demonstration mode is intentionally public; document that decision for cdk-nag.
+    if (config.disableAuth) {
+      NagSuppressions.addStackSuppressions(this, [
+        {
+          id: 'AwsSolutions-APIG4',
+          reason:
+            'Demonstration environment is intentionally open (no authorizer): it holds no secrets ' +
+            'and serves only mock vendor data, is ephemeral (DESTROY on teardown), and is bounded ' +
+            'by stage throttling. Enabled only when config.disableAuth is set (ADR-0025).',
+        },
+      ]);
+    }
 
     new cloudwatch.Dashboard(this, 'PrefillDashboard', { dashboardName: serviceName }).addWidgets(
       new cloudwatch.GraphWidget({

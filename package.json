@@ -18,6 +18,7 @@
     "deploy:dev": "cdk deploy -c env=dev",
     "deploy:staging": "cdk deploy -c env=staging",
     "deploy:prod": "cdk deploy -c env=prod",
+    "deploy:demo": "cdk deploy -c env=demo",
     "bootstrap:ci": "cdk deploy --app 'npx ts-node --prefer-ts-exts bin/ci-bootstrap.ts' VendorPrefill-CiBootstrap",
     "openapi:generate": "ts-node --prefer-ts-exts scripts/generate-openapi.ts",
     "openapi:check": "ts-node --prefer-ts-exts scripts/generate-openapi.ts --check",

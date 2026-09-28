@@ -21,6 +21,7 @@ jobs:
       - run: npm run synth # cdk synth (dev) — compiles infra AND runs cdk-nag
       - run: npx cdk synth -c env=prod # cdk-nag on the prod path (WAF/PITR enabled)
       - run: npx cdk synth -c env=dev -c authMode=cognito # cdk-nag on the Cognito fallback path
+      - run: npx cdk synth -c env=demo # cdk-nag on the open demo path (no auth, mock data)
       - run: npm run openapi:check # fail if the OpenAPI spec drifted from the schemas
 
   # Deploy to prod only from main, using GitHub OIDC to assume an AWS role.
