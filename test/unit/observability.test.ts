@@ -29,7 +29,7 @@ describe('withRequestContext', () => {
       return { statusCode: 200, body: '{}' };
     });
     const wrapped = withRequestContext(inner as never, logger);
-    const res = (await wrapped(event(), ctx, () => undefined)) as {
+    const res = (await wrapped(event(), ctx)) as {
       headers: Record<string, string>;
     };
 
@@ -41,11 +41,9 @@ describe('withRequestContext', () => {
   it('prefers an inbound x-correlation-id header for cross-service tracing', async () => {
     const inner = jest.fn(async () => ({ statusCode: 204, body: '' }));
     const wrapped = withRequestContext(inner as never, logger);
-    const res = (await wrapped(
-      event({ 'x-correlation-id': 'upstream-123' }),
-      ctx,
-      () => undefined,
-    )) as { headers: Record<string, string> };
+    const res = (await wrapped(event({ 'x-correlation-id': 'upstream-123' }), ctx)) as {
+      headers: Record<string, string>;
+    };
 
     expect(res.headers['x-correlation-id']).toBe('upstream-123');
   });

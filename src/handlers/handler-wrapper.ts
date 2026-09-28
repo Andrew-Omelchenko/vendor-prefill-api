@@ -1,4 +1,4 @@
-import type { APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda';
+import type { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
 import {
   NotFoundError,
   PrefillAlreadyExistsError,
@@ -8,6 +8,12 @@ import {
 import type { Logger } from '../domain/ports';
 import { headerValue } from '../lib/http';
 import { runWithRequestContext } from '../lib/request-context';
+
+// Async-only handler (Node 24 Lambda no longer supports callback handlers).
+export type ApiHandler = (
+  event: APIGatewayProxyEvent,
+  context: Context,
+) => Promise<APIGatewayProxyResult>;
 
 export function json(
   statusCode: number,
@@ -37,17 +43,14 @@ export function errorToResponse(err: unknown, logger: Logger): APIGatewayProxyRe
 // header for cross-service tracing, else the API Gateway request id), makes it
 // available to all downstream logs via AsyncLocalStorage, echoes it back on the
 // response, and emits one structured line per request with the status and latency.
-export function withRequestContext(
-  handler: APIGatewayProxyHandler,
-  log: Logger,
-): APIGatewayProxyHandler {
-  return async (event, context, callback) => {
+export function withRequestContext(handler: ApiHandler, log: Logger): ApiHandler {
+  return async (event, context) => {
     const incoming = headerValue(event.headers, 'x-correlation-id');
     const correlationId = incoming ?? event.requestContext?.requestId ?? context.awsRequestId;
     const start = Date.now();
 
     return runWithRequestContext({ correlationId }, async () => {
-      const result = (await handler(event, context, callback)) as APIGatewayProxyResult;
+      const result = await handler(event, context);
       log.info('request handled', {
         method: event.httpMethod,
         path: event.resource,

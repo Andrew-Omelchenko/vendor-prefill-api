@@ -1,14 +1,10 @@
-import type { APIGatewayProxyHandler } from 'aws-lambda';
 import type { Logger } from '../domain/ports';
 import type { PrefillService } from '../domain/prefill-service';
 import { validateUpdateInput } from '../domain/validation';
 import { headerValue, parseIfMatch } from '../lib/http';
-import { errorToResponse, json } from './handler-wrapper';
+import { ApiHandler, errorToResponse, json } from './handler-wrapper';
 
-export function createPutPrefillHandler(
-  service: PrefillService,
-  logger: Logger,
-): APIGatewayProxyHandler {
+export function createPutPrefillHandler(service: PrefillService, logger: Logger): ApiHandler {
   return async (event) => {
     const id = event.pathParameters?.id;
     if (!id) return json(400, { error: 'id path parameter is required' });

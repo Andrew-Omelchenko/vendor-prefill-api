@@ -68,7 +68,7 @@ const run =
       headers,
       body: hasBody ? JSON.stringify(req.body) : null,
     } as unknown as Parameters<typeof handlers.get>[0];
-    const result = (await h(event, {} as never, () => undefined)) as {
+    const result = (await h(event, {} as never)) as {
       statusCode: number;
       body: string;
     };
