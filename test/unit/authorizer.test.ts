@@ -35,6 +35,16 @@ describe('authorizer', () => {
     expect(result.context?.scope).toBe('read write');
   });
 
+  it('scopes the policy to the whole stage so result caching stays correct', async () => {
+    const result = await run(
+      jest.fn().mockResolvedValue({ sub: 'user-1', scope: '' }),
+      'Bearer good',
+    );
+    const statement = result.policyDocument.Statement[0] as { Resource: string };
+    expect(statement.Resource).toBe('arn:aws:execute-api:eu-central-1:123:api/dev/*');
+    expect(statement.Resource).not.toContain('/GET/'); // not the single-method ARN
+  });
+
   it('rejects a missing token with Unauthorized', async () => {
     await expect(run(jest.fn(), undefined)).rejects.toThrow('Unauthorized');
   });
