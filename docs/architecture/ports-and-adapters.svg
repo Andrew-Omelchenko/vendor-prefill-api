@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 510" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="Ports and adapters architecture: handlers and adapters both depend inward on the domain (service plus ports)." xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTo1ODZiZDcwNS03OTkyLTQ5NDQtYmRmZC1iMTE2NDQ5ZDg2YTAAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaD64K9YF8mEotKPTTq6IzXcAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDphZGI5NGE1Ni0yMTAzLTQwM2MtYmMzZS02N2M2ODBhMjQ1MzNscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNo+/+5hUvcYA9vZE5CRODSKwAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggU6VlUW015sosH8xGomTMxr1WBGu+MOGhvnXZjeVg71qkZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaF6LNO+VLjf55gl0LDchrzQAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRMAAAAAAAAAAAAAAAAZGhhc2hYIPzSCgn0B00YfrUwf1IFDAPpwd62OcPkqfmdd2H7CkUuZG5hbWVuanVtYmYgbWFuaWZlc3RqZXhjbHVzaW9uc4GiZXN0YXJ0GQFpZmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjU4NmJkNzA1LTc5OTItNDk0NC1iZGZkLWIxMTY0NDlkODZhMC9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOmExNzRhNGNjLTkyNzYtNDhhNy04ZGQ4LTJlODUyMWYwNTg5ZHJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCBTpWVRbTXmyiwfzEaiZMzGvVYEa74w4aG+ddmN5WDvWqJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggOsevjEqBJCzlfZ2sbyiJmloGwAxgF3IX1FQt0kmSdeWiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggEmpNPJExYEfajTO0XJaPTmIbgcnZpSNey221BcjeK850Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQPE4F1tdx+xzmhDhMorw7xiXTH9AOXrUqVXkcQtiUPHYfNRvcTyvWiEHv3eWDG9XfwRBwOzrHgNTCEEBnxtU5jw=</c2pa:manifest></metadata>
+  <style>
+    :root {
+      --text:#0f172a; --muted:#475569; --line:#64748b; --port:#d97706;
+      --deliver-bg:#ecfeff; --deliver-border:#0891b2;
+      --domain-bg:#eef2ff; --domain-border:#4f46e5;
+      --infra-bg:#f0fdf4; --infra-border:#16a34a;
+      --card:#ffffff; --card-border:#cbd5e1;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text:#e2e8f0; --muted:#94a3b8; --line:#94a3b8; --port:#f59e0b;
+        --deliver-bg:#083344; --deliver-border:#22d3ee;
+        --domain-bg:#1e1b4b; --domain-border:#818cf8;
+        --infra-bg:#052e16; --infra-border:#4ade80;
+        --card:#0b1220; --card-border:#334155;
+      }
+    }
+    .title { fill:var(--text); font-size:16px; font-weight:700; }
+    .hdr { fill:var(--text); font-size:13px; font-weight:700; }
+    .body { fill:var(--text); font-size:12px; }
+    .mono { fill:var(--text); font-size:12px; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .muted { fill:var(--muted); font-size:11px; }
+    .muted-i { fill:var(--muted); font-size:11px; font-style:italic; }
+    .lbl { fill:var(--muted); font-size:11px; font-weight:600; }
+    .panel-d { fill:var(--deliver-bg); stroke:var(--deliver-border); }
+    .panel-m { fill:var(--domain-bg); stroke:var(--domain-border); }
+    .panel-i { fill:var(--infra-bg); stroke:var(--infra-border); }
+    .card { fill:var(--card); stroke:var(--card-border); }
+    .port { fill:var(--card); stroke:var(--port); stroke-width:2; stroke-dasharray:5 3; }
+    .edge { stroke:var(--line); stroke-width:2; fill:none; }
+    .edge-dash { stroke:var(--line); stroke-width:1.6; fill:none; stroke-dasharray:5 4; }
+  </style>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="7.5" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="var(--line)"/>
+    </marker>
+  </defs>
+
+  <text x="460" y="34" text-anchor="middle" class="title">Ports &amp; adapters — dependencies point inward to the domain</text>
+
+  <!-- Panels -->
+  <rect x="24"  y="80" width="252" height="300" rx="10" class="panel-d"/>
+  <rect x="334" y="80" width="252" height="300" rx="10" class="panel-m"/>
+  <rect x="644" y="80" width="252" height="300" rx="10" class="panel-i"/>
+
+  <text x="150" y="102" text-anchor="middle" class="hdr">Delivery · driving adapters</text>
+  <text x="460" y="102" text-anchor="middle" class="hdr">Domain — no AWS SDK</text>
+  <text x="770" y="102" text-anchor="middle" class="hdr">Infrastructure · driven adapters</text>
+
+  <!-- Inward dependency arrows -->
+  <text x="305" y="140" text-anchor="middle" class="lbl">depends on</text>
+  <path d="M280,152 L330,152" class="edge" marker-end="url(#arrow)"/>
+  <text x="615" y="140" text-anchor="middle" class="lbl">implements</text>
+  <path d="M640,152 L590,152" class="edge" marker-end="url(#arrow)"/>
+
+  <!-- Delivery contents -->
+  <rect x="44" y="116" width="212" height="34" rx="6" class="card"/>
+  <text x="150" y="137" text-anchor="middle" class="body">HTTP · API Gateway event</text>
+  <path d="M150,150 L150,168" class="edge" marker-end="url(#arrow)"/>
+
+  <rect x="44" y="172" width="212" height="150" rx="6" class="card"/>
+  <text x="56" y="192" class="mono">src/handlers/</text>
+  <text x="56" y="214" class="body">get · post · put ·</text>
+  <text x="56" y="231" class="body">delete-prefill.ts</text>
+  <text x="56" y="256" class="body">handler-wrapper.ts</text>
+  <text x="56" y="273" class="muted">error → HTTP mapping</text>
+  <text x="56" y="298" class="muted-i">translate HTTP ↔ domain calls</text>
+
+  <!-- Domain contents -->
+  <rect x="354" y="116" width="212" height="82" rx="6" class="card"/>
+  <text x="460" y="138" text-anchor="middle" class="hdr">prefill-service.ts</text>
+  <text x="460" y="157" text-anchor="middle" class="body">business logic (factory)</text>
+  <text x="460" y="182" text-anchor="middle" class="muted">schemas · validation · errors</text>
+
+  <text x="460" y="216" text-anchor="middle" class="lbl">calls</text>
+  <path d="M460,198 L460,224" class="edge" marker-end="url(#arrow)"/>
+
+  <rect x="354" y="228" width="212" height="128" rx="6" class="port"/>
+  <text x="460" y="250" text-anchor="middle" class="hdr">ports.ts — interfaces</text>
+  <text x="460" y="273" text-anchor="middle" class="body">PrefillRepository</text>
+  <text x="460" y="291" text-anchor="middle" class="body">VendorClient</text>
+  <text x="460" y="309" text-anchor="middle" class="body">SecretsProvider</text>
+  <text x="460" y="327" text-anchor="middle" class="body">Logger · Clock</text>
+  <text x="460" y="348" text-anchor="middle" class="muted-i">the seam: interfaces the domain owns</text>
+
+  <!-- Infrastructure contents -->
+  <rect x="664" y="116" width="212" height="150" rx="6" class="card"/>
+  <text x="676" y="136" class="mono">src/clients/ · src/lib/</text>
+  <text x="676" y="158" class="body">prefill-repository.ts</text>
+  <text x="676" y="176" class="body">vendor-client.ts /</text>
+  <text x="676" y="193" class="body">fake-vendor-client.ts</text>
+  <text x="676" y="211" class="body">secrets.ts</text>
+  <text x="676" y="236" class="muted">only place with AWS SDK ·</text>
+  <text x="676" y="252" class="muted">fetch · opossum</text>
+
+  <text x="770" y="286" text-anchor="middle" class="lbl">call</text>
+  <path d="M770,266 L770,294" class="edge" marker-end="url(#arrow)"/>
+  <rect x="664" y="300" width="212" height="56" rx="6" class="card"/>
+  <text x="770" y="323" text-anchor="middle" class="body">DynamoDB · Vendor API</text>
+  <text x="770" y="341" text-anchor="middle" class="body">Secrets Manager</text>
+
+  <!-- Composition root -->
+  <path d="M460,404 L460,362" class="edge-dash" marker-end="url(#arrow)"/>
+  <text x="600" y="392" text-anchor="middle" class="lbl">injects adapters</text>
+  <rect x="24" y="408" width="872" height="54" rx="10" class="card"/>
+  <text x="40" y="430" class="hdr">Composition root — src/entry/composition.ts + entry/*.ts</text>
+  <text x="40" y="449" class="muted">Constructs the concrete adapters and injects them into the service at cold start. CDK targets the entry files.</text>
+
+  <!-- Legend -->
+  <text x="24" y="486" class="muted">→ compile-time dependency (points inward toward the domain).</text>
+  <text x="24" y="502" class="muted">Runtime data flows outward: handler → service → port → adapter → AWS.</text>
+</svg>
