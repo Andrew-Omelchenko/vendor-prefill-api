@@ -8,6 +8,8 @@ the vendor APIs — is a system the project does not own and therefore cannot tr
 Every arrow that crosses that boundary is a place where authentication, validation, or resilience
 must happen.
 
+For how the application code behind the API Gateway box is organized — ports, adapters, and the composition root — see [ports-and-adapters.md](ports-and-adapters.md).
+
 ## External systems
 
 - **Client** — whatever enterprise system calls the API.
@@ -34,7 +36,7 @@ metric trips an alarm that notifies via SNS.
 ## Internal components
 
 - **API Gateway** — the AWS-native front door (validation, routing, stage deployment).
-- **Lambda handlers** — thin adapters over the domain layer; they hold the business logic.
+- **Lambda handlers** — thin adapters over the domain; the service holds the business logic.
 - **DynamoDB** — combined cache and durable store (TTL applies only to cache items).
 - **Secrets Manager** — holds the vendor key, read at runtime and never baked into code.
 - **CloudWatch + SNS** — the observability plane (metrics via EMF, alarm, dashboard, notifications).
