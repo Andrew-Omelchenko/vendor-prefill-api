@@ -77,14 +77,25 @@ once #4 lands) wired to the existing SNS topic.
 
 ## Evolution
 
-### 9. List / pagination endpoint
+### 9. Async long-running work (request–reply + long polling)
+
+**Why:** operations that could exceed API Gateway's ~29s integration timeout must not run on the
+synchronous request path; holding a Lambda open for tens of seconds is costly and fragile. The read
+path today is bounded by the circuit breaker, so this is not needed as built — but it is the planned
+shape for slower work, and long polling is named in the role's requirements.
+**How:** the trigger returns 202, a worker Lambda does the slow work asynchronously and writes
+status + result to DynamoDB, a status endpoint returns 404/204/200, and the reverse proxy (ApigeeX)
+long-polls it so clients simply loop on 204. The backend stays push-ready (WebSocket/SSE/webhook) if
+connection cost matters. Detailed design: [async-long-polling.md](async-long-polling.md).
+
+### 10. List / pagination endpoint
 
 **Why:** records are only addressable by id; there is no way to enumerate them.
 **How:** add `GET /prefill` with cursor-based pagination (DynamoDB `LastEvaluatedKey`), and a GSI
 if access patterns beyond the partition key are needed. Only worth doing if the product requires
 enumeration.
 
-### 10. Java/Spring → serverless modernization plan
+### 11. Java/Spring → serverless modernization plan
 
 **Why:** the target role centers on modernizing Java/Spring services to serverless; a written
 migration approach is a strong artifact.
